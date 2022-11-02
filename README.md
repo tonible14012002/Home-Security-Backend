@@ -135,6 +135,38 @@ http://127.0.0.1:8000/accounts/ordinary/?ordering=-birth,-username&search=BuiNgo
 http://127.0.0.1:8000/accounts/ordinary/?ordering=-birth&search=namanhble14012002@gmail.com
 ```
 
+##### PAGINATION
+All the response data will be paginated into pages. Here is the sample format
+```bash
+{
+    "next": null,
+    "previous": null,
+    "num_pages": 1,
+    "count": 4,
+    "results": [
+        {
+            "pk": 8,
+            "username": "tony123",
+            "first_name": "Bui",
+            "last_name": "NamAnh",
+            "email": "namanh12@gmail.com",
+            "phone": "0796518081",
+            "address": "Ta quang buu",
+            "birth": "2022-10-31"
+        },
+        {
+            "pk": 7,
+            "username": "tony12",
+            "first_name": "Bui",
+            "last_name": "NamAnh",
+            "email": "namanh1@gmail.com",
+            "phone": "0796518081",
+            "address": "Ta quang buu",
+            "birth": "2022-10-31"
+        },
+    ]
+}
+```
 
 
 
