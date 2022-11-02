@@ -1,0 +1,10 @@
+^D:\DJANGO_BACKEND_SECURITYIOT\HOME_SECURITY\DLIB-19.24.0\BUILD\TEMP.WIN-AMD64-CPYTHON-310\RELEASE\DLIB_BUILD\NEON_TEST_BUILD\CMAKEFILES\2B5C3513C052FC0DBBDF2BD5C73EA7B9\GENERATE.STAMP.RULE
+setlocal
+C:\Users\nguye\AppData\Local\Programs\Python\Python310\Lib\site-packages\cmake\data\bin\cmake.exe -SD:/django_backend_securityiot/home_security/dlib-19.24.0/dlib/cmake_utils/test_for_neon -BD:/django_backend_securityiot/home_security/dlib-19.24.0/build/temp.win-amd64-cpython-310/Release/dlib_build/neon_test_build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/django_backend_securityiot/home_security/dlib-19.24.0/build/temp.win-amd64-cpython-310/Release/dlib_build/neon_test_build/neon_test.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
