@@ -25,6 +25,7 @@ def user_pos_save(instance, sender, **kwargs):
         return
     
     encodings = list_encodings[0]
+    
     with connection.cursor() as cusor:
         cusor.execute(
             (

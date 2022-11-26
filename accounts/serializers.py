@@ -1,6 +1,4 @@
-from pyexpat import model
-from tkinter import E
-from numpy import require
+
 from rest_framework import serializers
 from accounts.models import Visit
 from django.contrib.auth import get_user_model
@@ -16,14 +14,14 @@ class VisitSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ('pk', 'username', 'first_name', 'last_name', 
+        fields = ('id', 'username', 'first_name', 'last_name', 
                   'email', 'phone', 'address', 'birth')
 
 class UserDetailSerializer(UserSerializer):
     visits = VisitSerializer(many=True, read_only=True)
     class Meta:
         model = MyUser
-        fields = ('pk', 'username', 'first_name', 'last_name', 'is_staff', 
+        fields = ('id', 'username', 'first_name', 'last_name', 'is_staff', 
                   'email', 'image', 'phone', 'address', 'birth', 'visits')
         read_only_fields = ('username',)
     
@@ -33,7 +31,7 @@ class UserRegistrationSerializer(UserSerializer):
 
     class Meta:
         model = MyUser
-        fields = ('pk', 'username', 'first_name', 'last_name', 
+        fields = ('id', 'username', 'first_name', 'last_name', 
                   'email', 'image', 'password', 'confirm_password', 'phone', 'address', 'birth')
         extra_kwargs = {
             'password': {'required': True},

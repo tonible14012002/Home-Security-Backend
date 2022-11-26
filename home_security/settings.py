@@ -142,8 +142,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'accounts.pagination.MyPagination',
-    'PAGE_SIZE': 10
+
 }
 
 SIMPLE_JWT = {
@@ -156,9 +155,12 @@ ALLOWED_HOSTS=[]
 AUTH_USER_MODEL = 'accounts.MyUser'
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
+
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
 
 
@@ -166,5 +168,4 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
 ]
 
-CORS_ALLOW_CREDENTIALS = True
 APPEND_SLASH = False

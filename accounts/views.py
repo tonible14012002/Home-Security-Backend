@@ -21,7 +21,6 @@ from .models import MyUser, Visit
 from.ultils import detect_face
 from .ultils import IsAdminOrAccountOwner
 from django.db.models import Count
-
 # Create your views here.
 
 
@@ -50,10 +49,10 @@ class OrdinaryUserViewSet(viewsets.ModelViewSet):
     ordering_fields = ['username', 'first_name', 'email', 'phone', 
                        'address', 'visits__time', 'visits']
     
-    def get_permissions(self):
-        if not self.action == 'create':
-            return (IsAdminOrAccountOwner(),) 
-        return []
+    # def get_permissions(self):
+    #     if not self.action == 'create':
+    #         return (IsAdminOrAccountOwner(),) 
+    #     return []
     
     def get_queryset(self):
         users = MyUser.is_ordinary.all()
@@ -64,7 +63,6 @@ class OrdinaryUserViewSet(viewsets.ModelViewSet):
                 return users
             users = users.annotate(total_visits=Count('visits')).order_by('total_visits')
         return users
-        
     def get_serializer_class(self):
         if self.action == 'list':
             return UserSerializer
@@ -76,11 +74,12 @@ class AdminUserViewSet(viewsets.ViewSet,
                         generics.ListAPIView,
                         generics.RetrieveAPIView):
 
-    permission_classes = (IsAdminUser, OrderingFilter)
-    filter_backends = (SearchFilter,)
+    permission_classes = (IsAdminUser, )
+    filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ['username', 'first_name', 'email', 'phone', 'address']
     ordering_fields = ['username', 'first_name', 'email', 'phone', 
-                       'address', 'visits__time', 'visits']
+                       'address', 'visits__time', 'visits'] #most_visits
+
     def get_serializer_class(self):
         if (self.action == 'retrieve' 
             and self.request.user.is_staff):
@@ -92,21 +91,28 @@ class AdminUserViewSet(viewsets.ViewSet,
     def get_queryset(self):
         users = MyUser.is_admin.all()
         ordering_choices = self.request.query_params.get('ordering')
-        if ordering_choices and 'visits_count' in ordering_choices.split(','):
-            if '-visits_count' in ordering_choices.split(','):
+        if ordering_choices and 'most_visits' in ordering_choices.split(','):
+            if '-most_visits' in ordering_choices.split(','):
                 users= users.annotate(total_visits=Count('visits')).order_by('-total_visits')
                 return users
             return users.annotate(total_visits=Count('visits')).order_by('total_visits')
         return users
+    
     
 class VisitViewSet(viewsets.ViewSet,
                    generics.ListAPIView):
     serializer_class = VisitSerializer
     queryset = Visit.objects.all()
     filter_backends = (OrderingFilter, )
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def profile(request):
     serializer = UserDetailSerializer(request.user)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def verifyUser(request):
+    return Response({
+        'status': "ok"
+    })

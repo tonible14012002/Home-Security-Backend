@@ -30,9 +30,8 @@ class MyUser(AbstractUser):
     updated_at = models.DateTimeField(auto_now_add=True)
     is_valid = models.BooleanField(default=False)
     
-    address = models.CharField(max_length=200, blank=False)
-    birth = models.DateField(default=timezone.now, 
-                                 null=False, blank=False)
+    address = models.CharField(max_length=200)
+    birth = models.DateField(null=True, blank=True)
 
     phone = models.CharField(max_length=15,
                              validators=[
@@ -41,7 +40,7 @@ class MyUser(AbstractUser):
                                      r'(84|0[3|5|7|8|9])+([0-9]{8})\b',
                                      message='Enter valid phone number')
                                  ])
-    
+
     objects = UserManager()
     is_admin = AdminUserManager()
     is_ordinary = OrdinaryUserManager()

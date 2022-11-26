@@ -19,6 +19,7 @@ router.register('visit', VisitViewSet, 'visits')
 urlpatterns = [
     path('detect/', views.detect_face_by_img),
     path('', include(router.urls)),
+    path('verify/', views.verifyUser),
     path('profile/', views.profile),
     path('auth/token/', TokenObtainPairView.as_view()),
     path('auth/token/refresh/', TokenRefreshView.as_view()),

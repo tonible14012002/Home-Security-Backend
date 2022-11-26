@@ -1,0 +1,4 @@
+{
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "${workspaceFolder}/dlib-19.24.0/dlib/cmake_utils/test_for_sse4"
+}
