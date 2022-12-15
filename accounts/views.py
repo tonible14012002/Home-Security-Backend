@@ -5,7 +5,7 @@ from rest_framework import (
     generics,
 )
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.filters import (
     SearchFilter, 
@@ -43,7 +43,6 @@ def detect_face_by_img(request):
 
 class OrdinaryUserViewSet(viewsets.ModelViewSet):
     
-    parser_classes = (MultiPartParser, FormParser)
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ['username', 'first_name', 'email', 'phone', 'address']
     ordering_fields = ['username', 'first_name', 'email', 'phone', 
