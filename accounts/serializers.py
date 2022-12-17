@@ -21,21 +21,20 @@ class UserDetailSerializer(UserSerializer):
     visits = VisitSerializer(many=True, read_only=True)
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'first_name', 'last_name', 'is_staff', 
+        fields = ('id', 'username', 'first_name'    , 'is_staff', 
                   'email', 'image', 'phone', 'address', 'birth', 'visits')
         read_only_fields = ('username',)
     
 class UserRegistrationSerializer(UserSerializer):
     password = serializers.CharField(min_length=10, write_only=True)
-    confirm_password = serializers.CharField(min_length=10, write_only=True)
+    # confirm_password = serializers.CharField(min_length=10, write_only=True)
 
     class Meta:
         model = MyUser
         fields = ('id', 'username', 'first_name', 'last_name', 
-                  'email', 'image', 'password', 'confirm_password', 'phone', 'address', 'birth')
+                  'email', 'image', 'password', 'phone', 'address', 'birth')
         extra_kwargs = {
             'password': {'required': True},
-            'confirm_password': {'required': True},
             'username': {'required': True},
             'phone': {'required': True},
             'address': {'required': True}
@@ -49,14 +48,14 @@ class UserRegistrationSerializer(UserSerializer):
         return email
     
     def validate(self, data):
-        if not data.get('password') or not data.get('confirm_password'):
-            raise serializers.ValidationError("Please enter a password and confirm it.")
-        if data.get('password') != data.get('confirm_password'):
-            raise serializers.ValidationError("Those passwords don't match.")
+        if not data.get('password'):
+            raise serializers.ValidationError("Please enter a password ")
+        # if data.get('password') != data.get('confirm_password'):
+        #     raise serializers.ValidationError("Those passwords don't match.")
         return data
 
     def create(self, validated_data):
-        validated_data.pop('confirm_password')
+        # validated_data.pop('confirm_password')
         validated_data['password'] = make_password(validated_data['password'])
         user = MyUser.objects.create(**validated_data)
         return user
