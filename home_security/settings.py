@@ -67,7 +67,9 @@ ROOT_URLCONF = 'home_security.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'template'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -174,3 +176,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 APPEND_SLASH = False
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
