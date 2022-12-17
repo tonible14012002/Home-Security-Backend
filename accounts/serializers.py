@@ -14,7 +14,7 @@ class VisitSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'first_name', 'last_name', 
+        fields = ('id', 'username', 'first_name', 'last_name', 'is_staff', 'image',
                   'email', 'phone', 'address', 'birth')
 
 class UserDetailSerializer(UserSerializer):
