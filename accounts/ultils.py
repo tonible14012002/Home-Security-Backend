@@ -3,6 +3,7 @@ from rest_framework.permissions import BasePermission
 import face_recognition
 
 MyUser = get_user_model()
+
 class IsAdminOrAccountOwner(BasePermission):
     def has_permission(self, request, view):
         return  (request.user 

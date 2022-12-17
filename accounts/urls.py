@@ -23,4 +23,5 @@ urlpatterns = [
     path('profile/', views.profile),
     path('auth/token/', TokenObtainPairView.as_view()),
     path('auth/token/refresh/', TokenRefreshView.as_view()),
+    path('ordinary/<int:id>/accept/', views.accept_ordinary_user)
 ]

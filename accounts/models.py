@@ -29,6 +29,7 @@ class MyUser(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     is_valid = models.BooleanField(default=False)
+    is_accepted = models.BooleanField(default=False)
     
     address = models.CharField(max_length=200)
     birth = models.DateField(null=True, blank=True)

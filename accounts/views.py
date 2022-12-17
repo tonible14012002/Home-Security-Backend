@@ -5,7 +5,6 @@ from rest_framework import (
     generics,
 )
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.filters import (
     SearchFilter, 
@@ -21,6 +20,15 @@ from .models import MyUser, Visit
 from.ultils import detect_face
 from .ultils import IsAdminOrAccountOwner
 from django.db.models import Count
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes
+)
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from home_security.settings import EMAIL_HOST_USER
 # Create your views here.
 
 
@@ -55,6 +63,14 @@ class OrdinaryUserViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         users = MyUser.is_ordinary.all()
+
+        status = self.request.query_params.get('status')
+        if status:
+            if status == 'accepted':
+                users = users.filter(is_accepted=True)
+            else:
+                users = users.filter(is_accepted=False)
+
         ordering_choices = self.request.query_params.get('ordering')
         if ordering_choices and 'total_visits' in ordering_choices.split(','):
             if '-total_visits' in ordering_choices.split(','):
@@ -62,6 +78,7 @@ class OrdinaryUserViewSet(viewsets.ModelViewSet):
                 return users
             users = users.annotate(total_visits=Count('visits')).order_by('total_visits')
         return users
+
     def get_serializer_class(self):
         if self.action == 'list':
             return UserSerializer
@@ -97,7 +114,6 @@ class AdminUserViewSet(viewsets.ViewSet,
             return users.annotate(total_visits=Count('visits')).order_by('total_visits')
         return users
     
-    
 class VisitViewSet(viewsets.ViewSet,
                    generics.ListAPIView):
     serializer_class = VisitSerializer
@@ -115,3 +131,23 @@ def verifyUser(request):
     return Response({
         'status': "ok"
     })
+    
+    
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+def accept_ordinary_user(request, id):
+    user = get_object_or_404(MyUser, id=id, is_accepted=False)
+    user.is_accepted = True
+    user.save()
+    # email = user.email
+    # email_content = render_to_string('register_accepted_email.html')
+    # plain_text = strip_tags(email_content)
+    # send_mail('YOUR ACCOUNT IS NOW VALID',
+    #             plain_text,
+    #             EMAIL_HOST_USER,
+    #             [email],
+    #             html_message=email_content
+    #           )
+
+    return Response({'status': 'ok'})
+
