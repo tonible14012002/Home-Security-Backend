@@ -153,7 +153,7 @@ def accept_ordinary_user(request, id):
 
     return Response({'status': 'ok'})
 
-@api_view(['GET'])
+@api_view(['POST'])
 def get_user_from_refresh(request):
     refresh = request.data.get('refresh', None)
     if refresh:
@@ -162,7 +162,7 @@ def get_user_from_refresh(request):
             uid = payload['user_id']
             user = get_object_or_404(MyUser, id=uid)
             return Response(UserSerializer(user).data)
-        except KeyError:
+        except KeyError as a:
             return Response({'detail': 'Incorrect token'}, status=status.HTTP_400_BAD_REQUEST)
         except (jwt.DecodeError, jwt.ExpiredSignatureError) as e:
             return Response({'detail': 'Token may be expired or incorrect'}, status=status.HTTP_400_BAD_REQUEST)
