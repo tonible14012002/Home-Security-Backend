@@ -22,15 +22,17 @@ from .ultils import IsAdminOrAccountOwner
 from django.db.models import Count
 from rest_framework.decorators import (
     api_view,
-    authentication_classes,
     permission_classes
 )
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from home_security.settings import EMAIL_HOST_USER
-# Create your views here.
+import jwt
+from rest_framework import status
+from django.conf import settings
 
+# Create your views here.
 
 @api_view(['POST'])
 def detect_face_by_img(request):
@@ -151,3 +153,17 @@ def accept_ordinary_user(request, id):
 
     return Response({'status': 'ok'})
 
+@api_view(['GET'])
+def get_user_from_refresh(request):
+    refresh = request.data.get('refresh', None)
+    if refresh:
+        try:
+            payload = jwt.decode(refresh, settings.SECRET_KEY, 'HS256')
+            uid = payload['user_id']
+            user = get_object_or_404(MyUser, id=uid)
+            return Response(UserSerializer(user).data)
+        except KeyError:
+            return Response({'detail': 'Incorrect token'}, status=status.HTTP_400_BAD_REQUEST)
+        except (jwt.DecodeError, jwt.ExpiredSignatureError) as e:
+            return Response({'detail': 'Token may be expired or incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'detail': 'refresh token is required in body'}, status=status.HTTP_400_BAD_REQUEST)
