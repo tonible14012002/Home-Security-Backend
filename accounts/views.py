@@ -156,6 +156,7 @@ def accept_ordinary_user(request, id):
 @api_view(['POST'])
 def get_user_from_refresh(request):
     refresh = request.data.get('refresh', None)
+
     if refresh:
         try:
             payload = jwt.decode(refresh, settings.SECRET_KEY, 'HS256')
