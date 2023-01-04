@@ -15,7 +15,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenRefreshSerializer(TokenRefreshSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
-        print(attrs)
         # request = self.context.get('request')
         # username_field = get_user_model().USERNAME_FIELD
         # authenticate_kwargs = {

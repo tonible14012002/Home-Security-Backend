@@ -21,7 +21,7 @@ class UserDetailSerializer(UserSerializer):
     visits = VisitSerializer(many=True, read_only=True)
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'first_name'    , 'is_staff', 
+        fields = ('id', 'username', 'first_name', 'last_name', 'is_staff', 
                   'email', 'image', 'phone', 'address', 'birth', 'visits')
         read_only_fields = ('username',)
     
@@ -59,3 +59,9 @@ class UserRegistrationSerializer(UserSerializer):
         validated_data['password'] = make_password(validated_data['password'])
         user = MyUser.objects.create(**validated_data)
         return user
+
+class VisitWithUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Visit
+        fields = '__all__'

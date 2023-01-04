@@ -18,12 +18,13 @@ router.register('ordinary', OrdinaryUserViewSet, 'ordinary-users')
 router.register('visit', VisitViewSet, 'visits')
 
 urlpatterns = [
-    path('detect/', views.detect_face_by_img),
     path('', include(router.urls)),
+    path('ordinary-count/', views.get_users_count),
+    path('detect/', views.detect_face_by_img),
     path('verify/', views.verifyUser),
     path('profile/', views.profile),
     path('auth/token/', MyTokenObtainPairView.as_view()),
     path('auth/token/refresh/', MyTokenRefreshView.as_view()),
     path('ordinary/<int:id>/accept/', views.accept_ordinary_user),
-    path('auth/token/detail/', views.get_user_from_refresh)
+    path('auth/token/detail/', views.get_user_from_refresh),
 ]

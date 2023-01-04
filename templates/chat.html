@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+
+</style>
+<body>
+    <div class="wrapper">
+        <input id="chat-txt" />
+        <button id="chat-btn" >Send</button>
+        <div>
+            <ul id="">
+
+            </ul>
+        </div>
+    </div>
+    <script>
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/event/'
+        );
+
+        chatSocket.onmessage = (e) => {
+            console.log('event: ', e)
+            const data = JSON.parse(e.data)
+            console.log(data)
+        }
+
+        const button = document.getElementById('chat-btn')
+        const input = document.getElementById('chat-txt')
+
+        button.onclick = (e) => {
+            e.preventDefault()
+            chatSocket.send(input.value)
+        }
+
+    </script>
+</body>
+</html>

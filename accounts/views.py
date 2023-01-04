@@ -14,7 +14,7 @@ from .serializers import (
     UserDetailSerializer,
     UserRegistrationSerializer,
     UserSerializer,
-    VisitSerializer
+    VisitWithUserSerializer
 )
 from .models import MyUser, Visit
 from.ultils import detect_face
@@ -118,9 +118,10 @@ class AdminUserViewSet(viewsets.ViewSet,
     
 class VisitViewSet(viewsets.ViewSet,
                    generics.ListAPIView):
-    serializer_class = VisitSerializer
+    serializer_class = VisitWithUserSerializer
     queryset = Visit.objects.all()
     filter_backends = (OrderingFilter, )
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def profile(request):
@@ -134,9 +135,8 @@ def verifyUser(request):
         'status': "ok"
     })
     
-    
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated, IsAdminUser])
 def accept_ordinary_user(request, id):
     user = get_object_or_404(MyUser, id=id, is_accepted=False)
     user.is_accepted = True
@@ -168,3 +168,14 @@ def get_user_from_refresh(request):
         except (jwt.DecodeError, jwt.ExpiredSignatureError) as e:
             return Response({'detail': 'Token may be expired or incorrect'}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'detail': 'refresh token is required in body'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+# @permission_classes([IsAdminUser])
+def get_users_count(request):
+    total_user = MyUser.is_ordinary.count()
+    return Response({'count': total_user})
+
+@api_view(['POST'])
+def new_visit_alert():
+    pass

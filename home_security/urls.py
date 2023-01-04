@@ -21,7 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls'))
+    path('accounts/', include('accounts.urls')),
+    path('event/', include('realtime.urls')),
+    path('camera/', include('camera.urls')),
 ]
 
 if settings.DEBUG:
